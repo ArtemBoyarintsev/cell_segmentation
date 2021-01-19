@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def sift(model, train_dataset, test_dataset):
+def sift(model, train_dataset, test_dataset, cuda=False):
     i_train = np.random.randint(0, train_dataset.shape[0], 1)[0]
     i_test = np.random.randint(0, test_dataset.shape[0], 1)[0]
     
@@ -13,7 +13,9 @@ def sift(model, train_dataset, test_dataset):
     img_test = test_dataset[i_test, :-1].double()
     seg_test = test_dataset[i_test, -1].double()
     
-    imgs = torch.stack((img_train, img_test)).cuda()
+    imgs = torch.stack((img_train, img_test))
+    if cuda:
+        imgs = imgs.cuda()
     
     reco = model(imgs)
     
